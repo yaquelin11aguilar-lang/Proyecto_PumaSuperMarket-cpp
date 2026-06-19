@@ -91,6 +91,8 @@ int main() {
     int edadCliente = 0;
     int tipoCliente = 0;
     int diaSemana = 0;
+    string nombreProducto;
+    string areaProducto;
 
     //VARIABLES DEL BUCLE DE SELECCIÓN DE PRODUCTOS
     int codigoProducto = 0;
@@ -131,6 +133,71 @@ int main() {
             cout << "Ingrese la cantidad a llevar: ";
             cin >> cantidadProducto;
             
+            // OBTENER EL PRECIO SEGÚN EL CÓDIGO DE PRODUCTO
+            double precioProducto = 0.00;
+            switch (codigoProducto) {
+                case 1: 
+                nombreProducto = "Tomates";
+                precioProducto = 10.00; break; // Tomates (lb)
+                case 2: 
+                nombreProducto = "Repollo"; 
+                precioProducto = 15.00; break; // Repollo (lb)
+                case 3: 
+                nombreProducto = "Papas";
+                precioProducto = 17.00; break; // Papas (lb)
+                case 4: 
+                nombreProducto = "Carne molida";
+                precioProducto = 50.00; break; // CarneMolida (lb)
+                case 5: 
+                nombreProducto = "Carne de cerdo";
+                precioProducto = 70.00; break; // CarneCerdo (lb)
+                case 6: 
+                nombreProducto = "Carne para asar";
+                precioProducto = 75.00; break; // CarneParaAsar (lb)
+                case 7: 
+                nombreProducto = "Cerveza nacional";
+                precioProducto = 50.00; break; // CervezaNacional (unidad)
+                case 8: 
+                nombreProducto = "Cerveza extranjera";
+                precioProducto = 80.00; break; // CervezaExtranjera (unidad)
+                case 9: 
+                nombreProducto = "Vino";
+                precioProducto = 200.00; break; // Vino (botella)
+                case 10: 
+                nombreProducto = "Vodka";
+                precioProducto = 100.00; break; // Vodka (botella)
+                default: 
+                nombreProducto = "Código inválido";
+                precioProducto = 0.00; break;// Código inválido
+            }
+
+            // CLASIFICACION DEL ÁREA QUE PERTENECE CADA CODIGO (PRODUCTO)
+            if (codigoProducto >= 1 && codigoProducto <= 3) {
+                areaProducto = "Verduras";
+            } else if (codigoProducto >= 4 && codigoProducto <= 6) {
+                areaProducto = "Carnes";
+            } else if (codigoProducto >= 7 && codigoProducto <= 10) {
+                areaProducto = "Licores";
+            } else {
+                areaProducto = "Desconocida";
+            }
+            cout << "|°.- Área del producto -.°| : " << areaProducto << endl;
+            
+            // GESTION DE CANTIDADES (LIBRAS, UNIDADES Y BOTELLAS)
+             if (codigoProducto >= 1 && codigoProducto <= 6) {
+                cout << "Selecciono: " << cantidadProducto 
+                     << " libras de " << nombreProducto << "." << endl;
+            } else if (codigoProducto >= 7 && codigoProducto <= 8) {
+                cout << "Selecciono: " << cantidadProducto 
+                     << " unidades de " << nombreProducto << "." << endl;
+            } else if (codigoProducto >= 9 && codigoProducto <= 10) {
+                cout << "Selecciono: " << cantidadProducto 
+                     << " botellas de " << nombreProducto << "." << endl;
+            }
+
+            // CALCULO DEL SUBTOTAL DEL PRODUDUCTO
+            double subtotalProducto = precioProducto * cantidadProducto;
+            cout << "|°.- Subtotal por este producto -.°| : L." << subtotalProducto << endl;
             // --- AQUÍ CONECTARÁN TUS COMPAÑEROS ---
             // Aquí es donde el encargado de "Cálculos y Carrito" meterá sus funciones
             // Ej: agregarAlCarrito(codigoProducto, cantidadProducto);
