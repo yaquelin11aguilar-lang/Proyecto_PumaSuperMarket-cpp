@@ -80,6 +80,63 @@ void menuPrincipal() {
     cout << "=========================================================" << endl;
 }
 
+// Impuestos, Conversión y Facturación
+// FUNCIÓN: CALCULA EL ISV SEGÚN EL ÁREA DEL PRODUCTO
+double calcularISV(double subtotalConDescuento, bool esLicor) { 
+    double tasaISV = 0.0;
+    if (esLicor) {
+        tasaISV = 0.18; // 18% para licores
+    } else {
+        tasaISV = 0.15; // 15% general
+    }
+    return subtotalConDescuento * tasaISV;
+}
+
+// FUNCIÓN: CONVIERTE LEMPIRAS A DÓLARES
+double convertirADolares(double totalLempiras, double tipoCambiosUSD) {
+    return totalLempiras / tipoCambiosUSD; // Conversión a dólares usando la tasa fija
+}
+
+// FUNCIÓN: IMPRIME LA FACTURA FINAL
+void imprimirFactura (const string &nombreCliente, int tipoCliente, int edadCliente,
+                     double subtotalBruto, double &totalDescuentos, double &totalISV) {
+
+    const double tipoCambiosUSD = 24.5;
+
+    double subtotalConDescuento = subtotalBruto - totalDescuentos;
+    double totalLempiras = subtotalConDescuento + totalISV;
+    double totalDolares = convertirADolares(totalLempiras, tipoCambiosUSD);
+
+    // TIPO DE CLIENTE EN TEXTO
+    string tipoClienteStr;
+    switch (tipoCliente) {
+        case 1: tipoClienteStr = "Estrella"; break;
+        case 2: tipoClienteStr = "Regular";  break;
+        case 3: tipoClienteStr = "Nuevo";    break;
+        default: tipoClienteStr = "Desconocido"; break;
+    }
+
+    cout << "\n=========================================================" << endl;
+    cout << "          PUMA SUPER-MARKET - FACTURA FINAL              " << endl;
+    cout << "=========================================================" << endl;
+    cout << " Cliente    : " << nombreCliente                           << endl;
+    cout << " Tipo       : " << tipoClienteStr                          << endl;
+    cout << " Edad       : " << edadCliente << " años"                  << endl;
+    cout << "---------------------------------------------------------" << endl;
+    cout << " Subtotal bruto       : L." << subtotalBruto               << endl;
+    cout << " (-) Descuentos       : L." << totalDescuentos             << endl;
+    cout << " Subtotal con desc.   : L." << subtotalConDescuento        << endl;
+    cout << " (+) ISV              : L." << totalISV                    << endl;
+    cout << "---------------------------------------------------------" << endl;
+    cout << " TOTAL A PAGAR (L.)   : L." << totalLempiras               << endl;
+    cout << " TOTAL A PAGAR (USD)  : $" << totalDolares                 << endl;
+    cout << "=========================================================" << endl;
+    cout << "   Gracias por su compra en PUMA SUPER-MARKET, "
+         << nombreCliente << "!"                                         << endl;
+    cout << "=========================================================" << endl;
+}
+
+
 // FUNCIÓN PRINCIPAL
 int main() {
 
@@ -238,6 +295,7 @@ int main() {
         }
     
 
+
         // CONSULTA PARA SEGUIR COMPRANDO O IR AL CIERRE DE CAJA
         cout << "\n¿Desea seguir agregando productos al carrito? (s/n): ";
         cin >> continuarCompra;
@@ -252,17 +310,18 @@ int main() {
 
 
     // 3. CIERRE DE CAJA Y FACTURACIÓN
-    cout << "=========================================================" << endl;
-    cout << "               PROCEDIENDO AL CIERRE DE CAJA             " << endl;
-    cout << "=========================================================" << endl;
-    
-    // --- AQUÍ CONECTARÁ TU COMPAÑERO DE FACTURACIÓN ---
-    // Aquí se llamará a la función que procesa los subtotales, ISV (15% o 18%), 
-    // descuentos por día, tipo de cliente, tercera edad, y hace el cambio a Dólares (L.24.5)
-    // Ej: mostrarFacturaFinal(nombreCliente, tipoCliente, edadCliente, diaSemana);
-    
-    cout << "\n[Espacio reservado para la Factura Final]" << endl;
-    cout << "Gracias por su compra en PUMA SUPER-MARKET." << endl;
+    double subtotalTotal   = 0.0;
+    double totalDescuentos = 0.0;
+    double totalISV        = 0.0;
+
+    /* PENDIENTE - conectar con Integrante 3:
+    Dentro del bucle do-while, después de que calcule subtotalConDescuentoProducto:
+    bool esLicor = (codigoProducto >= 7 && codigoProducto <= 10);
+    totalISV += calcularISV(subtotalConDescuentoProducto, esLicor);
+    */
+
+    imprimirFactura(nombreCliente, tipoCliente, edadCliente,
+                    subtotalTotal, totalDescuentos, totalISV);
 
     return 0;
 }
