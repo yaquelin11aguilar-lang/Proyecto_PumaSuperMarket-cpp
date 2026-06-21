@@ -236,6 +236,7 @@ int main() {
             cout << "\n[OK] Se agregaron " << cantidadProducto << " unidades del producto " << codigoProducto << " al carrito." << endl;
           
         }
+    
 
         // CONSULTA PARA SEGUIR COMPRANDO O IR AL CIERRE DE CAJA
         cout << "\n¿Desea seguir agregando productos al carrito? (s/n): ";
