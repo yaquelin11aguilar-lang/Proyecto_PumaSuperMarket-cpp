@@ -161,3 +161,88 @@ int main() {
 
     return 0;
 }
+==================================================
+// FUNCIÓN: MOTOR DE DESCUENTOS (Responsable: Aldo - Analista de Costos)
+// ------------------------------------------------------------
+// Calcula el descuento en Lempiras correspondiente a UN producto
+// individual de la compra. Se llama UNA VEZ POR CADA PRODUCTO
+// que el cliente agrega al carrito.
+//
+// Parametros por VALOR (la funcion los usa, no los modifica):
+//   tipoCliente          -> 1=Estrella, 2=Regular, 3=Nuevo
+//   edadCliente          -> edad del cliente
+//   diaSemana            -> 1=Lunes ... 7=Domingo
+//   areaProducto         -> "Carnes", "Verduras" o "Licores"
+//   nombreProducto       -> nombre exacto del producto
+//   cantidad             -> unidades/libras/botellas de ESE producto
+//   precioUnitario       -> precio por unidad de ESE producto
+//   subtotal             -> precioUnitario * cantidad (de ESE producto)
+//   numeroProductoEnArea -> que numero de producto DISTINTO es este
+//                           dentro de su area (1=primero, 2=segundo...)
+//                           OJO: este dato debe contar solo productos
+//                           NUEVOS, no repetir el contador si el cliente
+//                           ya habia comprado ese mismo producto antes.
+//
+// Parametro por REFERENCIA (aqui se devuelve el resultado):
+//   descuentoTotal -> descuento en Lempiras aplicable a ESTE producto
+// ============================================================
+void calcularDescuentos(
+    int tipoCliente,
+    int edadCliente,
+    int diaSemana,
+    string areaProducto,
+    string nombreProducto,
+    int cantidad,
+    double precioUnitario,
+    double subtotal,
+    int numeroProductoEnArea,
+    double &descuentoTotal)
+{
+    descuentoTotal = 0;
+ 
+    // 1) Descuento por tipo de cliente
+    if (tipoCliente == 1 &&
+        (areaProducto == "Carnes" || areaProducto == "Verduras"))
+    {
+        // Estrella: 4% en carnes y verduras
+        descuentoTotal += subtotal * 0.04;
+    }
+    if (tipoCliente == 2 &&
+        areaProducto == "Carnes")
+    {
+        // Regular: 3% en carnes
+        descuentoTotal += subtotal * 0.03;
+    }
+    if (tipoCliente == 3 &&
+        areaProducto == "Licores")
+    {
+        // Nuevo: 2% en licores
+        descuentoTotal += subtotal * 0.02;
+    }
+ 
+    // 2) Lunes o Miercoles: 3% adicional sobre el subtotal del producto
+    if (diaSemana == 1 || diaSemana == 3)
+    {
+        descuentoTotal += subtotal * 0.03;
+    }
+ 
+    // 3) Tercera edad (65+) los viernes: 10% adicional
+    if (edadCliente >= 65 && diaSemana == 5)
+    {
+        descuentoTotal += subtotal * 0.10;
+    }
+ 
+    // 4) Segundo producto DISTINTO en Carnes: 50% sobre su subtotal
+    if (areaProducto == "Carnes" && numeroProductoEnArea == 2)
+    {
+        descuentoTotal += subtotal * 0.50;
+    }
+ 
+    // 5) Six-pack de cerveza: L.10 por cada six-pack completo (6 unidades)
+    if (nombreProducto == "Cerveza nacional" ||
+        nombreProducto == "Cerveza extranjera")
+    {
+        int cantidadSixPacks = cantidad / 6; // division entera
+        descuentoTotal += cantidadSixPacks * 10.0;
+    }
+}
