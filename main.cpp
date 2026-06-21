@@ -93,25 +93,33 @@ int main() {
     int diaSemana = 0;
 
     //VARIABLES DEL BUCLE DE SELECCIÓN DE PRODUCTOS
+    string nombreProducto;
+    string areaProducto;
     int codigoProducto = 0;
     int cantidadProducto = 0;
     char continuarCompra = 's';
+    double precioProducto = 0.00;
+    double subtotalVerduras = 0.00;
+    double subtotalCarnes = 0.00;
+    double subtotalLicores = 0.00;
+    double subtotalCervezaN = 0.00;
+    double subtotalCervezaE = 0.00;
+    double subtotalGeneral = 0.00;
 
     //CAPTURA DE DATOS DEL CLIENTE
     DatosCliente(nombreCliente, edadCliente, tipoCliente, diaSemana);
     
     system("cls"); // LIMPIEZA DE PANTALLA PARA EMPEZAR EL PROCESO DE COMPRA
 
-    // BIENVENIDA E INFORMACIÓN DE RESTRICCIÓN DE EDAD PARA LICORES
-
-    cout << "Bienvenido/a " << nombreCliente << " a PUMA SUPER-MARKET!" << endl;
-    if (!esMayorDeEdad(edadCliente)) {
-        cout << "* NOTA: Al ser menor de 18 años, el area de licores estara bloqueada. *" << endl;
-    }
-    cout << "---------------------------------------------------------\n" << endl;
-
     // CICLO PRINCIPAL DE COMPRA
     do {
+        // BIENVENIDA E INFORMACIÓN DE RESTRICCIÓN DE EDAD PARACINDY LICORES
+        cout << "Bienvenido/a " << nombreCliente << " a PUMA SUPER-MARKET!" << endl;
+            if (!esMayorDeEdad(edadCliente)) {
+        cout << "* NOTA: Al ser menor de 18 años, el area de licores estara bloqueada. *" << endl;
+        }
+        cout << "---------------------------------------------------------" << endl;
+        // MOSTRAR EL MENÚ PRINCIPAL DE PRODUCTOS
         menuPrincipal();
         
         cout << "\nIngrese el Código del producto que desea llevar (1-10): ";
@@ -121,30 +129,127 @@ int main() {
         if (codigoProducto < 1 || codigoProducto > 10) {
             cout << "=> Error: Codigo de producto inexistente." << endl;
         } 
+
         // CONTROL DE RESTRICCIÓN DE LICORES (Códigos del 7 al 10)
         else if ((codigoProducto >= 7 && codigoProducto <= 10) && !esMayorDeEdad(edadCliente)) {
             cout << "\n[ RESTRICCION DE EDAD ]" << endl;
             cout << "=> Error: Venta prohibida. Usted es menor de edad y no puede comprar licores.\n" << endl;
-        } 
+        }
         // SI EL CÓDIGO ES VÁLIDO Y NO HAY RESTRICCIÓN, SE PROCEDE A CAPTURAR LA CANTIDAD
         else {
             cout << "Ingrese la cantidad a llevar: ";
             cin >> cantidadProducto;
             
-            // --- AQUÍ CONECTARÁN TUS COMPAÑEROS ---
-            // Aquí es donde el encargado de "Cálculos y Carrito" meterá sus funciones
-            // Ej: agregarAlCarrito(codigoProducto, cantidadProducto);
+            // OBTENER EL PRECIO SEGÚN EL CÓDIGO DE PRODUCTO
+
+            
+            switch (codigoProducto) {
+                //ÁREA DE VERDURAS
+
+                case 1: 
+                nombreProducto = "Tomates";
+                precioProducto = 10.00; // Tomates (lb)
+                subtotalVerduras += precioProducto * cantidadProducto; 
+                break;
+
+                case 2: 
+                nombreProducto = "Repollo"; 
+                precioProducto = 15.00; // Repollo (lb)
+                subtotalVerduras += precioProducto * cantidadProducto; 
+                break;
+                case 3: 
+                nombreProducto = "Papas";
+                precioProducto = 17.00; // Papas (lb)
+                subtotalVerduras += precioProducto * cantidadProducto; 
+                break;
+                //ÁREA DE CARNES
+
+                case 4: 
+                nombreProducto = "Carne molida";
+                precioProducto = 50.00; // CarneMolida (lb)
+                subtotalCarnes += precioProducto * cantidadProducto; 
+                break;
+                case 5: 
+                nombreProducto = "Carne de cerdo";
+                precioProducto = 70.00; // CarneCerdo (lb)
+                subtotalCarnes += precioProducto * cantidadProducto; 
+                break;
+                case 6: 
+                nombreProducto = "Carne para asar";
+                precioProducto = 75.00; // CarneParaAsar (lb)
+                subtotalCarnes += precioProducto * cantidadProducto; 
+                break;
+                case 7: 
+                //ÁREA DE LICORES
+
+                nombreProducto = "Cerveza nacional";
+                precioProducto = 50.00; // CervezaNacional (unidad)
+                subtotalCervezaN += precioProducto * cantidadProducto; 
+                break;
+                case 8: 
+                nombreProducto = "Cerveza extranjera";
+                precioProducto = 80.00; // CervezaExtranjera (unidad)
+                subtotalCervezaE += precioProducto * cantidadProducto; 
+                break;
+                case 9: 
+                nombreProducto = "Vino";
+                precioProducto = 200.00; // Vino (botella)
+                subtotalLicores += precioProducto * cantidadProducto; 
+                break;
+                case 10: 
+                nombreProducto = "Vodka";
+                precioProducto = 100.00; // Vodka (botella)
+                subtotalLicores += precioProducto * cantidadProducto; 
+                break;
+
+                // CÓDIGOS INVÁLIDOS (CASO POR DEFECTO)
+                default: 
+                nombreProducto = "Código inválido";
+                precioProducto = 0.00; 
+                break;// Código inválido
+            }
+
+            // CLASIFICACION DEL ÁREA QUE PERTENECE CADA CODIGO (PRODUCTO)
+            if (codigoProducto >= 1 && codigoProducto <= 3) {
+                areaProducto = "Verduras";
+            } else if (codigoProducto >= 4 && codigoProducto <= 6) {
+                areaProducto = "Carnes";
+            } else if (codigoProducto >= 7 && codigoProducto <= 10) {
+                areaProducto = "Licores";
+            } else {
+                areaProducto = "Desconocida";
+            }
+            cout << "| Área del producto | : " << areaProducto << endl;
+            
+            // GESTION DE CANTIDADES (LIBRAS, UNIDADES Y BOTELLAS)
+             if (codigoProducto >= 1 && codigoProducto <= 6) {
+                cout << "Usted Selecciono: " << cantidadProducto 
+                     << " libras de " << nombreProducto << "." << endl;
+            } else if (codigoProducto >= 7 && codigoProducto <= 8) {
+                cout << "Usted Selecciono: " << cantidadProducto 
+                     << " unidades de " << nombreProducto << "." << endl;
+            } else if (codigoProducto >= 9 && codigoProducto <= 10) {
+                cout << "Usted Selecciono: " << cantidadProducto 
+                     << " botellas de " << nombreProducto << "." << endl;
+            }
+
             cout << "\n[OK] Se agregaron " << cantidadProducto << " unidades del producto " << codigoProducto << " al carrito." << endl;
-            // --------------------------------------
+          
         }
+    
 
         // CONSULTA PARA SEGUIR COMPRANDO O IR AL CIERRE DE CAJA
         cout << "\n¿Desea seguir agregando productos al carrito? (s/n): ";
         cin >> continuarCompra;
-        
         system("cls");
 
     } while (continuarCompra == 's' || continuarCompra == 'S');
+
+    subtotalGeneral = subtotalVerduras + subtotalCarnes + subtotalLicores + subtotalCervezaN + subtotalCervezaE;
+    cout << "=========================================================" << endl;
+    cout << "Subtotal General: L." << subtotalGeneral << endl;
+
+
 
     // 3. CIERRE DE CAJA Y FACTURACIÓN
     cout << "=========================================================" << endl;
